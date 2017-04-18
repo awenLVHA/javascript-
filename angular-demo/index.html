@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8"/>
+<script src="angular.1.4.8.min.js"></script>
+<body>
+    <div ng-app="myapp" ng-controller="mycon">
+        <p>
+            你的姓名：<input type="text" ng-model="name" placeholder="请输入你的姓名" ng-init="name='zhangwen';quantity=1;cost=5;person={firstName:'John',lastName:'Doe'};points=[1,15,19];names=[{name:'Jani',age:13},{name:'Jone',age:15}]"/>
+            <span>{{name}}</span>
+        </p>
+        <p>我的姓：{{person.firstName}} 我的名：{{person.lastName}}</p>
+        <ul>遍历数组：
+            <li ng-repeat="x in points">{{$index + 1}}   {{x}}</li>
+        </ul>
+        <ul>遍历姓名对象
+            <li ng-repeat="person in names | orderBy:'age'">姓名：{{person.name}}， 年龄：{{person.age}}</li>
+        </ul>
+        <p>输入过滤：</p>
+        <p><input type="text" ng-model="test"/></p>
+        <ul>
+            <li ng-repeat="x in names|filter:test">{{x.name}}</li>
+        </ul>
+        <p>
+            我的第一个表达式：5 + 5 = {{5 + 5}}
+        </p>
+        <p>
+            总价：{{quantity * cost | currency}} 或者直接使用ng-bind代替双括号 <span ng-bind="quantity * cost"></span>
+        </p>
+        <p ng-init="firstName='John'">姓名为 <span ng-bind="firstName"></span></p>
+        <p>尝试修改以下表单</p>
+        <p>
+            姓：<input type="text" ng-model="firstName"/><br>
+            名：<input type="text" ng-model="lastName"/><br>
+            您的姓名：{{firstName + " " + lastName}}
+
+        </p>
+        <p ng-controller="Ctrl">利用控制器，将姓和名拼接起来：{{fullName()}}</p>
+        <p ng-controller="Ctrl1">利用对象将姓和名放在一起组成person对象
+            姓：<input type="text" ng-model="person.firstName"/>
+            名：<input type="text" ng-model="person.lastName"/>
+            您的姓名：{{fullName()}}
+        </p>
+        <p ng-controller="upperCtrl">
+            姓名的大写为：{{firstName | uppercase}}
+        </p>
+        <table ng-controller="tableControl">
+            <tr ng-repeat="x in names">
+                <td>{{x.Name}}</td>
+                <td>{{x.Country}}</td>
+            </tr>
+        </table>
+        <div ng-init="mySwitch">
+            <p>
+                <button ng-disabled="mySwitch">点我！</button>
+            </p>
+            <p>
+                <input type="checkbox" ng-model="mySwitch"/>按钮
+            </p>
+            <p>{{mySwitch}}</p>
+        </div>
+
+        <div>
+            <p ng-show="true">我是可见的</p>
+            <p ng-show="false">我是不可见的</p>
+        </div>
+
+        <div ng-controller="fromCtrl">
+            <form novalidate>
+                First Name:<br>
+                <input type="text" ng-model="user.firstName"/><br>
+                Last Name:<br>
+                <input type="text" ng-model="user.lastName"/><br>
+                <button ng-click="reset()">reset</button>
+            </form>
+            <p>form={{user}}</p>
+            <p>master={{master}}</p>
+        </div>
+        <form ng-controller="validateCtrl" name="myForm" novalidate>
+            <p>用户名:<br>
+                <input type="text" name="user" ng-model="user" required/>
+                <span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+                    <span ng-show="myForm.user.$error.required">用户名是必须的。</span>
+                </span>
+            </p>
+            <p>邮箱:<br>
+                <input type="email" name="email" ng-model="email" required>
+                <span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+                <span ng-show="myForm.email.$error.required">邮箱是必须的。</span>
+                <span ng-show="myForm.email.$error.email">非法的邮箱地址。</span>
+                </span>
+            </p>
+            <p>
+                <input type="submit"
+                ng-disabled="myForm.user.$dirty && myForm.user.$invalid ||  
+                myForm.email.$dirty && myForm.email.$invalid">
+            </p>
+        </form>
+    </div>
+<script type="text/javascript">
+    var app = angular.module('myapp',[]);
+    app.controller('mycon', function ($scope) {
+        // body...
+        $scope.name = 'zhangwen';
+        $scope.firstName = 'join';
+        $scope.lastName = 'Doe';
+
+    });
+    app.controller('Ctrl',function ($scope) {
+        $scope.fullName = function() {
+            return $scope.firstName + ' ' + $scope.lastName;
+        }
+    });
+    app.controller('Ctrl1', function ($scope) {
+        $scope.person = {
+            'firstName':'Jone',
+            'lastName':'Doe'
+        }
+        $scope.fullName = function () {
+            var x = $scope.person;
+            return x.firstName + ' ' + x.lastName;
+        }
+    });
+    app.controller('upperCtrl', function ($scope) {
+        $scope.firstName = 'jone';
+        // $scope.lastName = 'doe';
+        // $scope.upperName = function() {
+        //     return $scope.firstName | uppercase + ' ' + $scope.lastName | uppercase;
+        // }
+    });
+    app.controller('tableControl', function ($scope, $http) {
+        // $http.get('./data').then(function(result) {
+        //     $scope.names = result.name;
+        // });
+    });
+    app.controller('fromCtrl', function ($scope) {
+        $scope.master = {firstName:"John", lastName:"Doe"};;
+        $scope.reset = function() {
+            $scope.user = angular.copy($scope.master);
+        }
+        $scope.reset();
+    });
+    app.controller('validateCtrl', function($scope) {
+        $scope.user = 'John Doe';
+        $scope.email = 'john.doe@gmail.com';
+    });
+</script>
+</body>
+</html>
