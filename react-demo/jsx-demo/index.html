@@ -9,10 +9,21 @@
   <body>
     <div id="example"></div>
     <script type="text/babel">
-ReactDOM.render(
-  <div>hello react!</div>,
-  document.getElementById('example')
-);
+    // jsx语法 js和html可以混写，遇到{}解析为js，遇到<>为html标签
+    var names=['alice','moke','snap'];
+    var HelloMessage = React.createClass({
+      render: function() {
+        return <div>{
+              names.map(function(name) {
+                return <div>hello, {name}!</div>;
+              })
+              }</div>
+          }
+        });
+        ReactDOM.render(
+          <HelloMessage/>,
+          document.getElementById('example')
+        );
     </script>
   </body>
 </html>
