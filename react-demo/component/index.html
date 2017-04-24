@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>react component</title>
+    <script src="../build/react-0.14.0.js"></script>
+    <script src="../build/react-dom-0.14.0.js"></script>  
+    <script src="../build/browser.min.js"></script>
 </head>
 <body>
-    
+    <div id="exampe"></div>
+    <script type="text/babel">
+        var HelloProp = React.createClass({
+            render: function() {
+                return <h1>{this.props.name}</h1>
+            }
+        });
+        ReactDOM.render(
+        <HelloProp name="HelloProp"/>,       // 顶层标签首字母必须是大写，同时，组建累只能包含一个顶层标签
+        document.getElementById('exampe')
+        );    
+    </script>
 </body>
 </html>
