@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>this.refs.refsname--获取真正的DOM</title>
+    <script src="../build/react-0.14.0.js"></script>
+    <script src="../build/react-dom-0.14.0.js"></script>  
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+<div id="example"></div>
+<script type="text/babel">
+var MyComponent = React.createClass({
+    handleClick: function() {
+        this.refs.myTextInput.focus();                     // 虚拟DOM是拿不到用户输入的
+        this.refs.myTextInput.value = '123';
+    },
+    render: function() {
+        return (
+            <div>
+                <input type="text" ref="myTextInput" value=""/>
+                // 绑定回调事件，等到真实的DOM发生click事件之后，获取refs属性
+                <input type="button" value="Focus the text input" onClick={this.handleClick}/> 
+            </div>
+        );
+    }
+});
+ReactDOM.render(
+    <MyComponent />,document.getElementById('example')
+);
+</script>
+</body>
+</html>
