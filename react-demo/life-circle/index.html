@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>react生命周期</title>
+    <script src="../build/react-0.14.0.js"></script>
+    <script src="../build/react-dom-0.14.0.js"></script>  
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+<div id="example"></div>
+<script type="text/babel">
+var lifeCircle=[{'Mounting':'已插入真实 DOM'},{'Updating':'正在被重新渲染'},{'Unmounting':'已移出真实 DOM'}];
+var list=['a','b','c'];
+var NodeList = React.createClass({
+    getInitialState: function() {
+        return {opacity:1.0};
+    },
+    componentDidMount: function() {
+        this.timer = setInterval(function() {
+            var opacity = this.state.opacity;
+            opacity -= .05;
+            if (opacity < 0.1) {
+                opacity = 1.0;
+            }
+            this.setState({opacity: opacity});
+        }.bind(this), 1000);
+    },
+    render: function() {
+        var list_inner = this.props.list;
+        var li = list_inner.map(function(inner) {
+            var key = Object.keys(inner)[0];
+            var value = inner[key];
+            return <li> {key}--{value} </li>;
+        });
+        return (<div style={{opacity: this.state.opacity}}>
+            <ol>{li}</ol>             
+            </div>);
+    },
+});
+ReactDOM.render(<NodeList list={lifeCircle}/>, document.getElementById('example'));
+</script>
+</body>
+</html>
